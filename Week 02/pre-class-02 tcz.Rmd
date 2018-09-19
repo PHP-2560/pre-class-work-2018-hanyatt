@@ -1,0 +1,139 @@
+---
+title: "pre class 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# pre-class
+
+Make sure you commit this often with meaningfull messages. 
+
+### Background
+
+The exponential distribution is defined by its cumulative distribution function
+\(F(x) = 1-e^{-\lambda x}\)
+
+The R function ***rexp()*** generates random variables with an exponential distribution. For example 
+<center><strong>rexp(n=10, rate=5)</strong> </center>
+
+results in 10 exponentially distributed numbers with a rate \(\lambda=5\). If you leave out the 5 and just have
+<center><strong>rexp(n=10) </strong></center>
+then this results in 10 exponentially distributed numbers with a rate \(\lambda=1\), this is also referred to as the "standard exponential distribution". 
+
+### Part 1
+
+
+1. Generate 200 random values from the standard exponential distribution and store them in a vector `exp.draws.1`.  Find the mean and standard deviation of `exp.draws.1`.
+```{r}
+exp.draws.1=rexp(n=200)
+mean.draws.1=mean(exp.draws.1)
+sd.draws.1=sd(exp.draws.1)
+print(paste("The mean of 'exp.draws.1' is" ,mean.draws.1, "and the and its standard deviation is" ,sd.draws.1))
+```
+
+2. Repeat, but change the rate to 0.2, 5, 7.3 and 10, storing the results in vectors called  `exp.draws.0.2`,  `exp.draws.5`,  `exp.draws.7.3` and  `exp.draws.10`. 
+```{R}
+exp.draws.0.2=rexp(n=200,rate=0.2)
+mean.draws.0.2=mean(exp.draws.0.2)
+sd.draws.0.2=sd(exp.draws.0.2)
+print(paste("The mean of 'exp.draws.0.2' is" ,mean.draws.0.2, "and the and its standard deviation is" ,sd.draws.0.2))
+exp.draws.5=rexp(n=200,rate=5)
+mean.draws.5=mean(exp.draws.5)
+sd.draws.5=sd(exp.draws.5)
+print(paste("The mean of 'exp.draws.5' is" ,mean.draws.5, "and the and its standard deviation is" ,sd.draws.5))
+exp.draws.7.3=rexp(n=200,rate=7.3)
+mean.draws.7.3=mean(exp.draws.7.3)
+sd.draws.7.3=sd(exp.draws.7.3)
+print(paste("The mean of 'exp.draws.7.3' is" ,mean.draws.7.3, "and the and its standard deviation is" ,sd.draws.7.3))
+exp.draws.10=rexp(n=200,rate=10)
+mean.draws.10=mean(exp.draws.10)
+sd.draws.10=sd(exp.draws.10)
+print(paste("The mean of 'exp.draws.10' is" ,mean.draws.10, "and the and its standard deviation is" ,sd.draws.10))
+```
+
+3. The function `plot()` is the generic function in R for the visual display of data. `hist()` is a function that takes in and bins data as a side effect. To use this function, we must first specify what we'd like to plot.
+    a. Use the `hist()` function to produce a histogram of your standard exponential distribution. 
+    b. Use `plot()` with this vector to display the random values from your standard distribution in order.
+    c. Now, use `plot()` with two arguments -- any two of your other stored random value vectors -- to create a scatterplot of the two vectors against each other.
+```{r}
+##a
+hist(exp.draws.1)
+##b
+plot(exp.draws.1,main = "Plot of exp.draws.1")
+##c
+plot(exp.draws.0.2,exp.draws.5, main="Plot of exp.draws.0.2 against exp.draws.5")
+```
+## Plot in part A shows that the frequency is extremely high when the value of standard exponential is between 0 and 1 with rate equals 1. The frequency drops really fast(exponentially) when the value of standard exponential increases and comes to about 0 when value of standard exponential is greater than 7.
+
+## From plot B, we can see the dots in upper part is quite loose(especially when the value is over 2) while in lower part is dense(especially when the value is below 1). When rate is 1, the value of standard exponential is more likely to distributed between 0 and 1. We can also speculate that the mean is around 1.
+
+## I make the plot of exp.draws.0.2(rate is 0.2) against exp.draws.5(rate is 5). We can see the larger rate has the smaller data range. The dots are densely located at the origin which means it is most likely to happen that both value of them are  small. The farther distance to the axes the looser distribution it is.   
+4. We'd now like to compare the properties of each of our vectors. Begin by creating a vector of the means of each of our five distributions in the order we created them and saving this to a variable name of your choice. Using this and other similar vectors, create the following scatterplots and explain in words what is going on:
+    a. The five means versus the five rates used to generate the distribution.
+    b. The standard deviations versus the rates.
+    c. The means versus the standard deviations.
+
+For each plot, explain in words what's going on.
+```{R}
+
+means =c(mean.draws.0.2,mean.draws.1,mean.draws.5,mean.draws.7.3,mean.draws.10)
+rates = c(0.2,1,5,7.3,10)
+sds = c(sd.draws.0.2,sd.draws.1,sd.draws.5,sd.draws.7.3,sd.draws.10)
+##a
+plot(rates,means,main="Means VS Rates")
+##b
+plot(rates,sds,main="Standard deviations VS Rates")
+##c
+plot(sds,means,main="Means VS Standard Deviations")
+```
+## The plot in part in is means vs rates. The mean for exponential distribution is 1/lambda(lambda is also known as rate). From the plot in part a, we can find the means and rates have negative relationship. The results of rate*mean are all close to 1 which agrees with the property of exponential distribution
+
+## The plot in part B is standard deviation vs rates. It is very similar to the plot in part A.  The standard deviation for exponential distribution is 1/lambda(lambda is also known as rate). From this plot, we can find the standard deviation and rates have negative relationship. The results of SD*mean are all close to 1 which agrees with the property of exponential distribution.
+
+## The plot in part C is standard deviation vs means. All of the dots are approximately in the line of y=x, in other words, we can say they have the same value. For a exponential distribution, both its mean and standard deviation are equal to 1/lambda(lambda is also known as rate). This property can be seen in this plot.
+
+### Part II (PHP 2560 Only)
+
+
+5. R's capacity for data and computation is large to what was available 10 years ago. 
+    a. To show this, generate 1.1 million numbers from the standard exponential distribution and store them in a vector called `big.exp.draws.1`. Calculate the mean and standard deviation.
+    b. Plot a histogram of `big.exp.draws.1`.  Does it match the function \(1-e^{-x}\)?  Should it? 
+    c. Find the mean of all of the entries in `big.exp.draws.1` which are strictly greater than 1. You may need to first create a new vector to identify which elements satisfy this.
+    d. Create a matrix, `big.exp.draws.1.mat`, containing the the values in 
+`big.exp.draws.1`, with 1100 rows and 1000 columns. Use this matrix as the input to the `hist()` function and save the result to a variable of your choice. What happens to your data?
+    e. Calculate the mean of the 371st column of `big.exp.draws.1.mat`.
+    f. Now, find the means of all 1000 columns of `big.exp.draws.1.mat` simultaneously. Plot the histogram of column means.  Explain why its shape does not match the histogram in problem 5b).
+
+```{r}
+##a
+big.exp.draws.1 = rexp(n=1100000)
+mean.big = mean(big.exp.draws.1)
+sd.big = sd(big.exp.draws.1)
+print(paste("The mean of 'big.exp.draws.1' is" ,mean.big, "and the and its standard deviation is" ,sd.big))
+
+##b
+hist(big.exp.draws.1)
+## it does match the function \(1-e^{-x}\), and it should since the amount of data is large enough. Both the standard deviation and mean are very close to 1.
+ 
+##c
+mean.big.greater=mean(big.exp.draws.1[big.exp.draws.1>1])
+print(paste("The mean of all of the entries in `big.exp.draws.1` which are strictly greater than 1 is",  mean.big.greater))
+
+##d
+big.exp.draws.1.mat = matrix(big.exp.draws.1,nrow=1100,ncol=1000,byrow=TRUE)
+hist(big.exp.draws.1.mat)
+## The data shows the same result as part b
+##e
+mean.371col=mean(big.exp.draws.1.mat[,371])
+print(paste("The mean of the 371st column of `big.exp.draws.1.mat` is",mean.371col))
+
+##f
+meanofcols = colMeans(big.exp.draws.1.mat)
+hist(meanofcols)
+## In each column, there are 1100 observations which means the means of columns are already close to the overall mean of the distribution which is 1. So we can see most of the observations are in the range of (0.95,1.05). All of the outliers have been balanced by a large number of regular data. However, in the part b, every observation will have more influence to the histgram since they are original data.
+```
+
