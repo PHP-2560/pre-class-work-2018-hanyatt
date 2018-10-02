@@ -72,7 +72,7 @@ A. Using a loop, create a new dataframe called survey.clean where all the invali
 ```{r}
 survey.clean = survey
 for(i in 1:dim(survey)[1]){
-  for(j in 1:dim(survey)[2]){
+  for(j in 2:dim(survey)[2]){
     if(survey[i,j]>=1 & survey[i,j]<=5){
       survey.clean[i,j]=survey[i,j]} else{
         survey.clean[i,j]=NA
