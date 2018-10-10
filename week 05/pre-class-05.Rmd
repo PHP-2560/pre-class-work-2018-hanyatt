@@ -122,23 +122,34 @@ for(i in seq_along(WCGS.new)){
 ```
 ## method 2 for B
 ```{r}
+library('dplyr')
 WCGS.new1=select_if(wcgs,is.numeric)
 WCGS.new1
 ```
 ## C
 ```{r}
-wcgs.sd=WCGS.new
+wcgs.sd_data=WCGS.new
 for(i in seq_along(WCGS.new)){
-  wcgs.sd[i]=standardize.me(WCGS.new[[i]])
+  wcgs.sd_data[[i]]=standardize.me(WCGS.new[[i]])
 }
 ```
 ## D
 ```{r}
 library('purrr')
-wcgs.mean=map_dbl(wcgs.sd,mean,na.rm=TRUE)
+wcgs.mean=map_dbl(wcgs.sd_data,mean,na.rm=TRUE)
 wcgs.mean
-wcgs.sd=map_dbl(wcgs.sd,sd,na.rm=TRUE)
+wcgs.sd=map_dbl(wcgs.sd_data,sd,na.rm=TRUE)
 wcgs.sd
+wcgs_loop_mean=vector(mode='numeric',length=length(wcgs.mean))
+wcgs_loop_sd=vector(mode='numeric',length=length(wcgs.mean))
+for(i in seq_along(wcgs.sd)){
+  wcgs_loop_mean[i]=mean(wcgs.sd_data[[i]],na.rm=TRUE)
+  wcgs_loop_sd[i]=sd(wcgs.sd_data[[i]],na.rm=TRUE)
+}
+for(i in seq_along(wcgs.sd)){
+ print(wcgs_loop_mean[[i]]==wcgs.mean[i] && wcgs_loop_sd[[i]]==wcgs.sd[i])
+}
+
 ```
 
 
