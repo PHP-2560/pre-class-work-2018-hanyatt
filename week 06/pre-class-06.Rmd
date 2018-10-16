@@ -12,24 +12,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. Read the source code for each of the following three functions, puzzle out what they do, and then brainstorm better names.
 
-```
-f1 <- function(string, prefix) {
+```{r}
+##To check whether the second string is identical to the beiginning characters in the first string which have the same length of the the second  string.
+check_identical <- function(string, prefix) {
   substr(string, 1, nchar(prefix)) == prefix
 }
-f2 <- function(x) {
+## Delete the last element in a vector if the lenfth of the vector is greater than or equal to 2.
+Delete_last <- function(x) {
   if (length(x) <= 1) return(NULL)
   x[-length(x)]
 }
-f3 <- function(x, y) {
+## Repeat variable y k times where k is equal to the length of variable x.
+repeat_variable <- function(x, y) {
   rep(y, length.out = length(x))
 }
 ```
 
 2. Compare and contrast rnorm() and MASS::mvrnorm(). How could you make them more consistent?
-
+```{r}
+library("MASS")
+##The rnorm returns a vector of one-dimention normal distribution data which correspond to the the mean and variance while the mvnorm returns a matrix of high-dimention normal distribution data which correspond to the means and corvariance matrix
+mvr_to_r=function(n,mu,Sigma){
+  stopifnot(length(mu)==1)
+  as.vector(mvrnorm(n,mu,Sigma))
+}
+mvr_to_r(10,15)
+## We give the limitation so that the mvrnorm is only able to work with 1-dimention data
+```
 
 3. Use `lapply()` and an anonymous function to find the coefficient of variation (the standard deviation divided by the mean) for all columns in the mtcars dataset. 
-
+```{r}
+data(mtcars)
+coef=lapply(mtcars, function(x,na.rm=true) sd(x)/mean(x))
+coef
+```
 4. Use vapply() to:
     a. Compute the standard deviation of every column in a numeric data frame.
     b. Compute the standard deviation of every numeric column in a mixed data frame. (Hint: you’ll need to use vapply() twice.)
+```{r}
+##a
+sd_vapply_numeric=function(df){
+vapply(df, function(x,na.rm=true) sd(x),numeric(1))
+}
+sd_vapply_numeric(mtcars)
+##b
+sd_vapply_mix=function(df){
+  df=df[vapply(df,is.numeric,logical(1))]
+  vapply(df, function(x,na.rm=true) sd(x),numeric(1))
+}
+b=data.frame(x=c(1,2,3,4,5),y=c(2:6),z=c(3:7),t=c("a","b","c","d","e"))
+sd_vapply_mix(b)
+```
