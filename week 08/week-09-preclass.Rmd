@@ -21,15 +21,49 @@ options(scipen = 3, digits = 3)
 ## Exercises
 
 1. Read the HTML content of the following URL with a variable called webpage: https://money.cnn.com/data/us_markets/ At this point, it will also be useful to open this web page in your browser.
+```{r}
+library("rvest")
+library("httr")
+webpage=read_html("https://money.cnn.com/data/us_markets/")
+webpage
+```
 2. Get the session details (status, type, size) of the above mentioned URL.
-3. Extract all of the sector names from the “Stock Sectors” table (bottom left of the web page.)
-4. Extract all of the “3 Month % Change” values from the “Stock Sectors” table.
-5. Extract the table “What’s Moving” (top middle of the web page) into a data-frame.
-6. Re-construct all of the links from the first column of the “What’s Moving” table.
-Hint: the base URL is “https://money.cnn.com”
-7. Extract the titles under the “Latest News” section (bottom middle of the web page.)
+```{r}
+session=html_session("https://money.cnn.com/data/us_markets/")
+session
+```
+3. Extract all of the sector names from the "stock Sectors"" table (bottom left of the web page.)
+```{r}
+webpage %>%
+  html_nodes(css="table")%>%
+  html_table(fill=TRUE) %>%
+  .[[2]] %>%
+  .[,1]
+```
+4. Extract all of the "3 Month % Change"" values from the "stock Sectors" table.
+```{r}
+webpage %>%
+  html_nodes(css="table")%>%
+  html_table(fill=TRUE) %>%
+  .[[2]] %>%
+  .[,2]
+```
+5. Extract the table "what's Moving" (top middle of the web page) into a data-frame.
+```{r}
+webpage %>%
+  html_nodes(css="table")%>%
+  html_table(fill=TRUE) %>%
+  .[[1]]
+```
+6. Re-construct all of the links from the first column of the ��what's Moving" table.
+Hint: the base URL is "https://money.cnn.com"
+```{r}
+url="https://money.cnn.com"
+paste(url,html_attr(html_nodes(webpage,"td .wsod_symbol"),"href"))
+```
+7. Extract the titles under the “Latest News�? section (bottom middle of the web page.)
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see.
-Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the “What’s Moving” table.
-9. Extract the values of the blue percentage-bars from the “Trending Tickers” table (bottom right of the web page.)
-Hint: in this case, the values are stored under the “class” attribute.
-10. Get the links of all of the “svg” images on the web page.
+Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the “What’s Moving�? table.
+9. Extract the values of the blue percentage-bars from the “Trending Tickers�? table (bottom right of the web page.)
+Hint: in this case, the values are stored under the “class�? attribute.
+10. Get the links of all of the “svg�? images on the web page.
