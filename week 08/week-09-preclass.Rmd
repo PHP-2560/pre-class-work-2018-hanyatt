@@ -34,26 +34,24 @@ session
 ```
 3. Extract all of the sector names from the "stock Sectors"" table (bottom left of the web page.)
 ```{r}
-webpage %>%
+tables=webpage %>%
   html_nodes(css="table")%>%
-  html_table(fill=TRUE) %>%
-  .[[2]] %>%
-  .[,1]
+  html_table(fill=TRUE)
+tables
 ```
+
+```{r}
+tables[[2]][,1]
+```
+
 4. Extract all of the "3 Month % Change"" values from the "stock Sectors" table.
 ```{r}
-webpage %>%
-  html_nodes(css="table")%>%
-  html_table(fill=TRUE) %>%
-  .[[2]] %>%
-  .[,2]
+tables[[2]][,2]
 ```
 5. Extract the table "what's Moving" (top middle of the web page) into a data-frame.
 ```{r}
-webpage %>%
-  html_nodes(css="table")%>%
-  html_table(fill=TRUE) %>%
-  .[[1]]
+wm_df=data.frame(tables[[1]])
+wm_df
 ```
 6. Re-construct all of the links from the first column of the ¡°what's Moving" table.
 Hint: the base URL is "https://money.cnn.com"
@@ -61,9 +59,26 @@ Hint: the base URL is "https://money.cnn.com"
 url="https://money.cnn.com"
 paste(url,html_attr(html_nodes(webpage,"td .wsod_symbol"),"href"))
 ```
-7. Extract the titles under the â€œLatest Newsâ€? section (bottom middle of the web page.)
+7. Extract the titles under the "latest News"" section (bottom middle of the web page.)
+```{r}
+  news_node=html_nodes(webpage,css="#section_latestnews li")
+  html_text(news_node)
+```
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see.
-Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the â€œWhatâ€™s Movingâ€? table.
-9. Extract the values of the blue percentage-bars from the â€œTrending Tickersâ€? table (bottom right of the web page.)
-Hint: in this case, the values are stored under the â€œclassâ€? attribute.
-10. Get the links of all of the â€œsvgâ€? images on the web page.
+
+Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the ¡±What's Moving" table.
+```{r}
+news_node=html_nodes(webpage,css=".wsod_disclaimer span")
+html_attrs(news_node)
+```
+9. Extract the values of the blue percentage-bars from the "Trending Tickers"" table (bottom right of the web page.)
+```{r}
+news_node=html_nodes(webpage,css=".scale div")
+html_attr(news_node,"class")
+```
+Hint: in this case, the values are stored under the "class" attribute.
+10. Get the links of all of the "svg" images on the web page.
+```{r}
+news_node=html_nodes(webpage,css="img[src$='svg']")
+html_attr(news_node,"src")
+```
