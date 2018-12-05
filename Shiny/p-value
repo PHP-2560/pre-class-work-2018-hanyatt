@@ -1,0 +1,22 @@
+library(shiny)
+
+
+ui <- fluidPage(
+  
+
+  titlePanel("P-value shiny"),
+  
+  numericInput(inputId = "Z","What is the z-value?",min=-4,max=4),
+  
+  mainPanel("P-value"),
+  
+  verbatimTextOutput("Result")
+)
+
+
+server <- function(input, output) {
+  
+  output$Result<-renderPrint(pnorm(input$Z)) 
+}
+
+shinyApp(ui = ui, server = server)
