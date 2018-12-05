@@ -6,7 +6,7 @@ ui <- fluidPage(
 
   titlePanel("P-value shiny"),
   
-  numericInput(inputId = "Z","What is the z-value?",min=-4,max=4),
+  numericInput(inputId = "Z","What is the z-value?",min=-4,max=4, NA),
   
   mainPanel("P-value"),
   
